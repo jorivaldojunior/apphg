@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Especialidades - Hospital Guararapes</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        .title {
+            color: #16a34a; /* green-600 */
+            font-size: 1.25rem; /* Título menor */
+            font-weight: bold;
+        }
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 20px; /* Cantos mais arredondados */
+            padding: 1rem; /* Menos espaço interno */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.875rem; /* Texto menor */
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card.selected {
+            border: 2px solid #16a34a;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="max-w-md mx-auto">
+        <!-- Título com ícone -->
+        <div class="flex items-center mb-4"> <!-- Menos margem -->
+            <img src="./img/hospital_guararapes_logo.jpg" alt="Ícone de serviços" class="w-16 h-16 mr-2"> <!-- Ícone menor -->
+            <h1 class="title">Seleção de Especialidades</h1>
+        </div>
+
+        <!-- Cards de seleção de especialidades -->
+        <form id="especialidadesForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Selecione a especialidade:</label>
+                <!-- Grid de 3 colunas -->
+                <div class="mt-1 grid grid-cols-3 gap-3"> <!-- Menos espaçamento entre os cards -->
+                    <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Cardiologia">
+                        Cardilogia
+                    </div>
+                    <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Dermatologia">
+                        Dermatologia
+                    </div>
+                    <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Dentista">
+                        Dentista
+                    </div>
+                    <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Ginecologia">
+                        Ginecologia
+                    </div>
+                    <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Neurologia">
+                        Neurologia
+                    </div>
+                    <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Ortopedia">
+                        Ortopedia
+                    </div>
+                    <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Obstetrícia">
+                        Obstetrícia
+                    </div>
+                    <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Pediatria">
+                        Pediatria
+                    </div>
+                    <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Urologia">
+                        Urologia
+                    </div>
+                    <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Oftalmologia">
+                        Oftalmologia
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="w-full bg-green-600 text-white py-1 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-sm"> <!-- Botão menor -->
+                    Salvar Especialidade
+                </button>
+            </div>
+        </form>
+
+        <!-- Botão para retornar à página inicial -->
+        <div class="mt-3"> <!-- Menos margem -->
+            <a href="index1.html" class="w-full bg-gray-600 text-white py-1 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 text-sm text-center block"> <!-- Botão menor -->
+                Voltar para a Página Inicial
+            </a>
+        </div>
+
+        <!-- Mensagem de sucesso -->
+        <div id="mensagemSucesso" class="hidden mt-3 p-3 bg-green-100 border border-green-400 text-green-700 rounded-md text-sm"> <!-- Mensagem menor -->
+            Especialidade salva com sucesso!
+        </div>
+    </div>
+
+    <script>
+        // Aguarda o carregamento completo da página
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('especialidadesForm');
+            const mensagemSucesso = document.getElementById('mensagemSucesso');
+            const cards = document.querySelectorAll('.card');
+
+            let especialidadeSelecionada = null;
+
+            // Adiciona um listener para cada card
+            cards.forEach(card => {
+                card.addEventListener('click', function () {
+                    // Remove a seleção de todos os cards
+                    cards.forEach(c => c.classList.remove('selected'));
+
+                    // Seleciona o card clicado
+                    card.classList.add('selected');
+                    especialidadeSelecionada = card.getAttribute('data-value');
+                });
+            });
+
+            // Adiciona um listener para o envio do formulário
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault(); // Evita o envio padrão do formulário
+
+                    if (!especialidadeSelecionada) {
+                        alert('Por favor, selecione uma especialidade.');
+                        return;
+                    }
+
+                    // Salva a especialidade no Local Storage
+                    localStorage.setItem('especialidadeSelecionada', especialidadeSelecionada);
+
+                    // Exibe a mensagem de sucesso
+                    if (mensagemSucesso) {
+                        mensagemSucesso.classList.remove('hidden');
+                    }
+
+                    // Limpa a seleção (opcional)
+                    cards.forEach(c => c.classList.remove('selected'));
+                    especialidadeSelecionada = null;
+
+                    // Esconde a mensagem após 5 segundos
+                    setTimeout(() => {
+                        if (mensagemSucesso) {
+                            mensagemSucesso.classList.add('hidden');
+                        }
+                    }, 5000);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
