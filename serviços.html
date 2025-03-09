@@ -21,6 +21,13 @@
         }
         .card {
             transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 20px; /* Cantos mais arredondados */
+            padding: 1rem; /* Menos espaço interno */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.875rem; /* Texto menor */
         }
         .card:hover {
             transform: translateY(-5px);
@@ -44,7 +51,7 @@
             <div>
                 <label class="block text-sm font-medium text-green-600">Selecione o serviço:</label>
                 <!-- Grid de 2 colunas -->
-                <div class="mt-1 grid grid-cols-2 gap-4">
+                <div class="mt-1 grid grid-cols-3 gap-4">
                     <div class="card p-4 bg-green-400 text- text-white rounded-lg shadow-md cursor-pointer" data-value="Maternidade">
                         Maternidade
                     </div>
