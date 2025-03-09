@@ -19,6 +19,16 @@
             height: 24px;
             margin-right: 8px;
         }
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card.selected {
+            border: 2px solid #16a34a;
+        }
     </style>
 </head>
 <body class="p-4">
@@ -29,35 +39,30 @@
             <h1 class="title">Seleção de Serviços</h1>
         </div>
 
-        <!-- Formulário de seleção de serviços -->
+        <!-- Cards de seleção de serviços -->
         <form id="servicosForm" class="space-y-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700">Selecione o serviço:</label>
-                <div class="mt-1 space-y-2">
-                    <label class="flex items-center">
-                        <input type="radio" name="servico" value="Maternidade" required class="mr-2">
+                <!-- Grid de 2 colunas -->
+                <div class="mt-1 grid grid-cols-2 gap-4">
+                    <div class="card p-4 bg-white rounded-lg shadow-md cursor-pointer" data-value="Maternidade">
                         Maternidade
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="servico" value="Urgência" required class="mr-2">
+                    </div>
+                    <div class="card p-4 bg-white rounded-lg shadow-md cursor-pointer" data-value="Urgência">
                         Urgência
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="servico" value="Consultórios Especializados" required class="mr-2">
+                    </div>
+                    <div class="card p-4 bg-white rounded-lg shadow-md cursor-pointer" data-value="Consultórios Especializados">
                         Consultórios Especializados
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="servico" value="Cirurgias" required class="mr-2">
+                    </div>
+                    <div class="card p-4 bg-white rounded-lg shadow-md cursor-pointer" data-value="Cirurgias">
                         Cirurgias
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="servico" value="Planos de Saúde" required class="mr-2">
+                    </div>
+                    <div class="card p-4 bg-white rounded-lg shadow-md cursor-pointer" data-value="Planos de Saúde">
                         Planos de Saúde
-                    </label>
-                    <label class="flex items-center">
-                        <input type="radio" name="servico" value="Exames" required class="mr-2">
+                    </div>
+                    <div class="card p-4 bg-white rounded-lg shadow-md cursor-pointer" data-value="Exames">
                         Exames
-                    </label>
+                    </div>
                 </div>
             </div>
             <div>
@@ -85,14 +90,31 @@
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('servicosForm');
             const mensagemSucesso = document.getElementById('mensagemSucesso');
+            const cards = document.querySelectorAll('.card');
+
+            let servicoSelecionado = null;
+
+            // Adiciona um listener para cada card
+            cards.forEach(card => {
+                card.addEventListener('click', function () {
+                    // Remove a seleção de todos os cards
+                    cards.forEach(c => c.classList.remove('selected'));
+
+                    // Seleciona o card clicado
+                    card.classList.add('selected');
+                    servicoSelecionado = card.getAttribute('data-value');
+                });
+            });
 
             // Adiciona um listener para o envio do formulário
             if (form) {
                 form.addEventListener('submit', function (e) {
                     e.preventDefault(); // Evita o envio padrão do formulário
 
-                    // Captura o serviço selecionado
-                    const servicoSelecionado = document.querySelector('input[name="servico"]:checked').value;
+                    if (!servicoSelecionado) {
+                        alert('Por favor, selecione um serviço.');
+                        return;
+                    }
 
                     // Salva o serviço no Local Storage
                     localStorage.setItem('servicoSelecionado', servicoSelecionado);
@@ -102,8 +124,9 @@
                         mensagemSucesso.classList.remove('hidden');
                     }
 
-                    // Limpa o formulário (opcional)
-                    form.reset();
+                    // Limpa a seleção (opcional)
+                    cards.forEach(c => c.classList.remove('selected'));
+                    servicoSelecionado = null;
 
                     // Esconde a mensagem após 5 segundos
                     setTimeout(() => {
