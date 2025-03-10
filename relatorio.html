@@ -8,17 +8,27 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #ffffff;
+            background-color: #ffffff; /* Fundo branco */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Impede rolagem horizontal */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         .title {
             color: #16a34a; /* green-600 */
             font-size: 1.25rem; /* Título menor */
             font-weight: bold;
+            text-align: left; /* Alinhar título à esquerda */
         }
         .card {
             border-radius: 12px; /* Cantos arredondados */
             padding: 1rem; /* Espaço interno */
-            background-color: #ffffff /* Fundo cinza claro */
+            background-color: #ffffff; /* Fundo branco */
+            margin: 1rem; /* Margens iguais */
+            max-width: 100%; /* Largura máxima */
+            box-shadow: none; /* Sem sombra */
         }
         table {
             width: 100%;
@@ -26,31 +36,53 @@
         }
         th, td {
             padding: 0.75rem;
-            border: 1px solid #e5e7eb; /* Bordas cinza */
+            border-bottom: 1px solid #e5e7eb; /* Bordas cinza apenas na parte inferior */
             text-align: left;
         }
         th {
             background-color: #16a34a; /* Cabeçalho verde */
             color: white;
+            font-weight: 600; /* Texto mais forte */
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Sombra no rodapé */
+            z-index: 1000; /* Garante que o rodapé fique acima de outros elementos */
+        }
+        .footer i {
+            color: #16a34a; /* Ícones verdes */
+            font-size: 2rem; /* Ícones maiores */
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .footer i:hover {
+            color: #15803d; /* Verde mais escuro no hover */
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1rem; /* Margens laterais para evitar rolagem horizontal */
         }
     </style>
 </head>
-<body class="p-4">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"> <!-- Margens iguais e responsivas -->
-        <!-- Título com ícone -->
-        <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center">
-                <img src="./img/hospital_guararapes_logo.jpg" alt="Ícone de serviços" class="w-16 h-16 mr-2">
-                <h1 class="title">Relatório de Agendamento</h1>
-            </div>
-            <!-- Ícone para sair -->
-            <a href="index1.html" class="text-gray-600 hover:text-gray-800">
-                <i class="fas fa-sign-out-alt text-2xl"></i>
-            </a>
+<body>
+    <div class="container">
+        <!-- Cabeçalho com logo e título -->
+        <div class="flex items-center mb-4 mt-4">
+            <img src="./img/hospital_guararapes_logo.jpg" alt="Logo do Hospital Guararapes" class="w-16 h-16 mr-2">
+            <h1 class="title">Relatório de Agendamento</h1>
         </div>
 
         <!-- Card com o relatório -->
-        <div class="card p-4 mb-4">
+        <div class="card">
             <table>
                 <thead>
                     <tr>
@@ -90,18 +122,17 @@
                 </tbody>
             </table>
         </div>
+    </div>
 
-        <!-- Botão para enviar por WhatsApp -->
-        <div class="mb-4">
-            <button id="enviarWhatsApp" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                <i class="fab fa-whatsapp mr-2"></i> Enviar por WhatsApp
-            </button>
-        </div>
+    <!-- Rodapé com ícones -->
+    <div class="footer">
+        <i class="fab fa-whatsapp" id="enviarWhatsApp"></i>
+        <i class="fas fa-arrow-left" id="voltar"></i>
+    </div>
 
-        <!-- Mensagem de sucesso -->
-        <div id="mensagemSucesso" class="hidden mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md text-sm">
-            Relatório enviado com sucesso!
-        </div>
+    <!-- Mensagem de sucesso -->
+    <div id="mensagemSucesso" class="hidden mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md text-sm text-center">
+        Relatório enviado com sucesso!
     </div>
 
     <script>
@@ -159,6 +190,14 @@ Por favor, confirme os dados acima para continuar o atendimento.
                             mensagemSucesso.classList.add('hidden');
                         }, 5000);
                     }
+                });
+            }
+
+            // Botão para voltar
+            const voltar = document.getElementById('voltar');
+            if (voltar) {
+                voltar.addEventListener('click', function () {
+                    window.location.href = "index1.html"; // Redireciona para a página inicial
                 });
             }
         });
