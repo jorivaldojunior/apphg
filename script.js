@@ -71,3 +71,17 @@ points.forEach((point) => {
     addPoint(point);
   });
 });
+
+
+function abrirWhatsApp() {
+  window.open("https://api.whatsapp.com/send/?phone=5581991152307&text&type=phone_number&app_absent=0", "_blank");
+}
+
+function abrirFacebook() {
+  window.open("https://www.facebook.com/hospitalguararapes/?locale=pt_BR", "_blank");
+}
+
+function abrirInstagram() {
+  window.open("https://www.instagram.com/guararapeshospital/#", "_blank");
+}
+
