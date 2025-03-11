@@ -99,7 +99,7 @@
                     <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Oftalmologia">
                         Oftalmologia
                     </div>
-                    <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Oftalmologia">
+                    <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Outros">
                         Outros
                     </div>
                 </div>
@@ -128,32 +128,41 @@
             const form = document.getElementById('especialidadesForm');
             const mensagemSucesso = document.getElementById('mensagemSucesso');
             const cards = document.querySelectorAll('.card');
-
+    
             let especialidadeSelecionada = null;
-
+    
             // Verifica qual card está selecionado
             cards.forEach(card => {
                 if (card.classList.contains('selected')) {
                     especialidadeSelecionada = card.getAttribute('data-value');
                 }
             });
-
+    
             if (!especialidadeSelecionada) {
-                alert('Por favor, selecione uma especialidade.');
+                // Exibe a mensagem de alerta
+                if (mensagemSucesso) {
+                    mensagemSucesso.textContent = 'Por favor, selecione uma especialidade.'; // Texto do alerta
+                    mensagemSucesso.classList.remove('hidden');
+                    mensagemSucesso.classList.remove('bg-green-100', 'border-green-400', 'text-green-700'); // Remove o estilo de sucesso
+                    mensagemSucesso.classList.add('bg-red-100', 'border-red-400', 'text-red-700'); // Adiciona o estilo de alerta
+                }
                 return;
             }
-
+    
             // Salva a especialidade no Local Storage
             localStorage.setItem('especialidadeSelecionada', especialidadeSelecionada);
-
+    
             // Exibe a mensagem de sucesso
             if (mensagemSucesso) {
+                mensagemSucesso.textContent = 'Especialidade salva com sucesso!'; // Texto de sucesso
                 mensagemSucesso.classList.remove('hidden');
+                mensagemSucesso.classList.remove('bg-red-100', 'border-red-400', 'text-red-700'); // Remove o estilo de alerta
+                mensagemSucesso.classList.add('bg-green-100', 'border-green-400', 'text-green-700'); // Adiciona o estilo de sucesso
             }
-
+    
             // Limpa a seleção (opcional)
             cards.forEach(c => c.classList.remove('selected'));
-
+    
             // Esconde a mensagem após 5 segundos
             setTimeout(() => {
                 if (mensagemSucesso) {
@@ -161,7 +170,7 @@
                 }
             }, 5000);
         }
-
+    
         // Adiciona um listener para cada card
         document.addEventListener('DOMContentLoaded', function () {
             const cards = document.querySelectorAll('.card');
@@ -169,7 +178,7 @@
                 card.addEventListener('click', function () {
                     // Remove a seleção de todos os cards
                     cards.forEach(c => c.classList.remove('selected'));
-
+    
                     // Seleciona o card clicado
                     card.classList.add('selected');
                 });

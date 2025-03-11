@@ -92,14 +92,26 @@
         function submitForm() {
             const form = document.getElementById('cadastroForm');
             const mensagemSucesso = document.getElementById('mensagemSucesso');
-
+    
             if (form) {
                 // Captura os dados do formulário
                 const nome = document.getElementById('nome').value;
                 const endereco = document.getElementById('endereco').value;
                 const telefone = document.getElementById('telefone').value;
                 const email = document.getElementById('email').value;
-
+    
+                // Verifica se todos os campos foram preenchidos
+                if (!nome || !endereco || !telefone || !email) {
+                    // Exibe a mensagem de alerta
+                    if (mensagemSucesso) {
+                        mensagemSucesso.textContent = 'Por favor, preencha todos os campos.'; // Texto do alerta
+                        mensagemSucesso.classList.remove('hidden');
+                        mensagemSucesso.classList.remove('bg-green-100', 'border-green-400', 'text-green-700'); // Remove o estilo de sucesso
+                        mensagemSucesso.classList.add('bg-red-100', 'border-red-400', 'text-red-700'); // Adiciona o estilo de alerta
+                    }
+                    return;
+                }
+    
                 // Cria um objeto com os dados
                 const usuario = {
                     nome,
@@ -107,18 +119,21 @@
                     telefone,
                     email
                 };
-
+    
                 // Salva os dados no Local Storage
                 localStorage.setItem('usuarioCadastrado', JSON.stringify(usuario));
-
+    
                 // Exibe a mensagem de sucesso
                 if (mensagemSucesso) {
+                    mensagemSucesso.textContent = 'Cadastro salvo com sucesso!'; // Texto de sucesso
                     mensagemSucesso.classList.remove('hidden');
+                    mensagemSucesso.classList.remove('bg-red-100', 'border-red-400', 'text-red-700'); // Remove o estilo de alerta
+                    mensagemSucesso.classList.add('bg-green-100', 'border-green-400', 'text-green-700'); // Adiciona o estilo de sucesso
                 }
-
+    
                 // Limpa o formulário
                 form.reset();
-
+    
                 // Esconde a mensagem após 5 segundos
                 setTimeout(() => {
                     if (mensagemSucesso) {
@@ -127,7 +142,7 @@
                 }, 5000);
             }
         }
-
+    
         // Adiciona um listener para o envio do formulário
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('cadastroForm');

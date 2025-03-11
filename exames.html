@@ -112,32 +112,41 @@
             const form = document.getElementById('exameForm');
             const mensagemSucesso = document.getElementById('mensagemSucesso');
             const cards = document.querySelectorAll('.card');
-
+    
             let exameSelecionado = null;
-
+    
             // Verifica qual card está selecionado
             cards.forEach(card => {
                 if (card.classList.contains('selected')) {
                     exameSelecionado = card.getAttribute('data-value');
                 }
             });
-
+    
             if (!exameSelecionado) {
-                alert('Por favor, selecione um exame.');
+                // Exibe a mensagem de alerta
+                if (mensagemSucesso) {
+                    mensagemSucesso.textContent = 'Por favor, selecione um exame.'; // Texto do alerta
+                    mensagemSucesso.classList.remove('hidden');
+                    mensagemSucesso.classList.remove('bg-green-100', 'border-green-400', 'text-green-700'); // Remove o estilo de sucesso
+                    mensagemSucesso.classList.add('bg-red-100', 'border-red-400', 'text-red-700'); // Adiciona o estilo de alerta
+                }
                 return;
             }
-
+    
             // Salva o exame no Local Storage
             localStorage.setItem('exameSelecionado', exameSelecionado);
-
+    
             // Exibe a mensagem de sucesso
             if (mensagemSucesso) {
+                mensagemSucesso.textContent = 'Exame salvo com sucesso!'; // Texto de sucesso
                 mensagemSucesso.classList.remove('hidden');
+                mensagemSucesso.classList.remove('bg-red-100', 'border-red-400', 'text-red-700'); // Remove o estilo de alerta
+                mensagemSucesso.classList.add('bg-green-100', 'border-green-400', 'text-green-700'); // Adiciona o estilo de sucesso
             }
-
+    
             // Limpa a seleção (opcional)
             cards.forEach(c => c.classList.remove('selected'));
-
+    
             // Esconde a mensagem após 5 segundos
             setTimeout(() => {
                 if (mensagemSucesso) {
@@ -145,7 +154,7 @@
                 }
             }, 5000);
         }
-
+    
         // Adiciona um listener para cada card
         document.addEventListener('DOMContentLoaded', function () {
             const cards = document.querySelectorAll('.card');
@@ -153,7 +162,7 @@
                 card.addEventListener('click', function () {
                     // Remove a seleção de todos os cards
                     cards.forEach(c => c.classList.remove('selected'));
-
+    
                     // Seleciona o card clicado
                     card.classList.add('selected');
                 });
