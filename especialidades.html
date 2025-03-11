@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Especialidades - Hospital Guararapes</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #ffffff;
@@ -30,6 +31,27 @@
         }
         .card.selected {
             border: 2px solid #16a34a;
+        }
+        .footer-icons {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* Espaçamento entre os ícones */
+            border-top: 1px solid #e2e8f0;
+        }
+        .footer-icons .icon-button {
+            color: #16a34a; /* green-600 */
+            cursor: pointer;
+            transition: color 0.3s;
+            font-size: 32px; /* Ícones maiores */
+        }
+        .footer-icons .icon-button:hover {
+            color: #15803d; /* green-700 */
         }
     </style>
 </head>
@@ -82,19 +104,7 @@
                     </div>
                 </div>
             </div>
-            <div>
-                <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-sm"> <!-- Botão menor -->
-                    Salvar Especialidade
-                </button>
-            </div>
         </form>
-
-        <!-- Botão para retornar à página inicial -->
-        <div class="mt-3"> <!-- Menos margem -->
-            <a href="index1.html" class="w-full bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 text-sm text-center block"> <!-- Botão menor -->
-                Voltar para a Página Inicial
-            </a>
-        </div>
 
         <!-- Mensagem de sucesso -->
         <div id="mensagemSucesso" class="hidden mt-3 p-3 bg-green-100 border border-green-400 text-green-700 rounded-md text-sm"> <!-- Mensagem menor -->
@@ -102,16 +112,59 @@
         </div>
     </div>
 
+    <!-- Rodapé com ícones -->
+    <div class="footer-icons">
+        <div class="icon-button" onclick="submitForm()">
+            <i class="fas fa-check"></i> <!-- Ícone de check (salvar especialidade) -->
+        </div>
+        <div class="icon-button" onclick="window.location.href='index1.html';">
+            <i class="fas fa-arrow-left"></i> <!-- Ícone de seta para voltar -->
+        </div>
+    </div>
+
     <script>
-        // Aguarda o carregamento completo da página
-        document.addEventListener('DOMContentLoaded', function () {
+        // Função para enviar o formulário
+        function submitForm() {
             const form = document.getElementById('especialidadesForm');
             const mensagemSucesso = document.getElementById('mensagemSucesso');
             const cards = document.querySelectorAll('.card');
 
             let especialidadeSelecionada = null;
 
-            // Adiciona um listener para cada card
+            // Verifica qual card está selecionado
+            cards.forEach(card => {
+                if (card.classList.contains('selected')) {
+                    especialidadeSelecionada = card.getAttribute('data-value');
+                }
+            });
+
+            if (!especialidadeSelecionada) {
+                alert('Por favor, selecione uma especialidade.');
+                return;
+            }
+
+            // Salva a especialidade no Local Storage
+            localStorage.setItem('especialidadeSelecionada', especialidadeSelecionada);
+
+            // Exibe a mensagem de sucesso
+            if (mensagemSucesso) {
+                mensagemSucesso.classList.remove('hidden');
+            }
+
+            // Limpa a seleção (opcional)
+            cards.forEach(c => c.classList.remove('selected'));
+
+            // Esconde a mensagem após 5 segundos
+            setTimeout(() => {
+                if (mensagemSucesso) {
+                    mensagemSucesso.classList.add('hidden');
+                }
+            }, 5000);
+        }
+
+        // Adiciona um listener para cada card
+        document.addEventListener('DOMContentLoaded', function () {
+            const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
                 card.addEventListener('click', function () {
                     // Remove a seleção de todos os cards
@@ -119,40 +172,8 @@
 
                     // Seleciona o card clicado
                     card.classList.add('selected');
-                    especialidadeSelecionada = card.getAttribute('data-value');
                 });
             });
-
-            // Adiciona um listener para o envio do formulário
-            if (form) {
-                form.addEventListener('submit', function (e) {
-                    e.preventDefault(); // Evita o envio padrão do formulário
-
-                    if (!especialidadeSelecionada) {
-                        alert('Por favor, selecione uma especialidade.');
-                        return;
-                    }
-
-                    // Salva a especialidade no Local Storage
-                    localStorage.setItem('especialidadeSelecionada', especialidadeSelecionada);
-
-                    // Exibe a mensagem de sucesso
-                    if (mensagemSucesso) {
-                        mensagemSucesso.classList.remove('hidden');
-                    }
-
-                    // Limpa a seleção (opcional)
-                    cards.forEach(c => c.classList.remove('selected'));
-                    especialidadeSelecionada = null;
-
-                    // Esconde a mensagem após 5 segundos
-                    setTimeout(() => {
-                        if (mensagemSucesso) {
-                            mensagemSucesso.classList.add('hidden');
-                        }
-                    }, 5000);
-                });
-            }
         });
     </script>
 </body>

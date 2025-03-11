@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Serviços - Hospital Guararapes</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #ffffff;
@@ -36,6 +37,27 @@
         .card.selected {
             border: 2px solid #16a34a;
         }
+        .footer-icons {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* Espaçamento entre os ícones */
+            border-top: 1px solid #e2e8f0;
+        }
+        .footer-icons .icon-button {
+            color: #16a34a; /* green-600 */
+            cursor: pointer;
+            transition: color 0.3s;
+            font-size: 32px; /* Ícones maiores */
+        }
+        .footer-icons .icon-button:hover {
+            color: #15803d; /* green-700 */
+        }
     </style>
 </head>
 <body class="p-4">
@@ -52,14 +74,14 @@
                 <label class="block text-sm font-medium text-green-600">Selecione o serviço:</label>
                 <!-- Grid de 2 colunas -->
                 <div class="mt-1 grid grid-cols-3 gap-4">
-                    <div class="card p-4 bg-green-400 text- text-white rounded-lg shadow-md cursor-pointer" data-value="Maternidade">
+                    <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Maternidade">
                         Maternidade
                     </div>
                     <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Urgência">
                         Urgência
                     </div>
                     <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Consultórios Especializados">
-                         Especialidades
+                        Especialidades
                     </div>
                     <div class="card p-4 bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Cirurgias">
                         Cirurgias
@@ -72,19 +94,7 @@
                     </div>
                 </div>
             </div>
-            <div>
-                <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                    Salvar Serviço
-                </button>
-            </div>
         </form>
-
-        <!-- Botão para retornar à página inicial -->
-        <div class="mt-4">
-            <a href="index1.html" class="w-full bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 text-center block">
-                Voltar para a Página Inicial
-            </a>
-        </div>
 
         <!-- Mensagem de sucesso -->
         <div id="mensagemSucesso" class="hidden mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
@@ -92,16 +102,59 @@
         </div>
     </div>
 
+    <!-- Rodapé com ícones -->
+    <div class="footer-icons">
+        <div class="icon-button" onclick="submitForm()">
+            <i class="fas fa-check"></i> <!-- Ícone de check (salvar serviço) -->
+        </div>
+        <div class="icon-button" onclick="window.location.href='index1.html';">
+            <i class="fas fa-arrow-left"></i> <!-- Ícone de seta para voltar -->
+        </div>
+    </div>
+
     <script>
-        // Aguarda o carregamento completo da página
-        document.addEventListener('DOMContentLoaded', function () {
+        // Função para enviar o formulário
+        function submitForm() {
             const form = document.getElementById('servicosForm');
             const mensagemSucesso = document.getElementById('mensagemSucesso');
             const cards = document.querySelectorAll('.card');
 
             let servicoSelecionado = null;
 
-            // Adiciona um listener para cada card
+            // Verifica qual card está selecionado
+            cards.forEach(card => {
+                if (card.classList.contains('selected')) {
+                    servicoSelecionado = card.getAttribute('data-value');
+                }
+            });
+
+            if (!servicoSelecionado) {
+                alert('Por favor, selecione um serviço.');
+                return;
+            }
+
+            // Salva o serviço no Local Storage
+            localStorage.setItem('servicoSelecionado', servicoSelecionado);
+
+            // Exibe a mensagem de sucesso
+            if (mensagemSucesso) {
+                mensagemSucesso.classList.remove('hidden');
+            }
+
+            // Limpa a seleção (opcional)
+            cards.forEach(c => c.classList.remove('selected'));
+
+            // Esconde a mensagem após 5 segundos
+            setTimeout(() => {
+                if (mensagemSucesso) {
+                    mensagemSucesso.classList.add('hidden');
+                }
+            }, 5000);
+        }
+
+        // Adiciona um listener para cada card
+        document.addEventListener('DOMContentLoaded', function () {
+            const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
                 card.addEventListener('click', function () {
                     // Remove a seleção de todos os cards
@@ -109,40 +162,8 @@
 
                     // Seleciona o card clicado
                     card.classList.add('selected');
-                    servicoSelecionado = card.getAttribute('data-value');
                 });
             });
-
-            // Adiciona um listener para o envio do formulário
-            if (form) {
-                form.addEventListener('submit', function (e) {
-                    e.preventDefault(); // Evita o envio padrão do formulário
-
-                    if (!servicoSelecionado) {
-                        alert('Por favor, selecione um serviço.');
-                        return;
-                    }
-
-                    // Salva o serviço no Local Storage
-                    localStorage.setItem('servicoSelecionado', servicoSelecionado);
-
-                    // Exibe a mensagem de sucesso
-                    if (mensagemSucesso) {
-                        mensagemSucesso.classList.remove('hidden');
-                    }
-
-                    // Limpa a seleção (opcional)
-                    cards.forEach(c => c.classList.remove('selected'));
-                    servicoSelecionado = null;
-
-                    // Esconde a mensagem após 5 segundos
-                    setTimeout(() => {
-                        if (mensagemSucesso) {
-                            mensagemSucesso.classList.add('hidden');
-                        }
-                    }, 5000);
-                });
-            }
         });
     </script>
 </body>
