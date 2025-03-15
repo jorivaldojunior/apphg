@@ -99,7 +99,7 @@
                     <tr><td>Serviço</td><td id="servicoSelecionado">-</td></tr>
                     <tr><td>Exame</td><td id="exameSelecionado">-</td></tr>
                     <tr><td>Especialidade</td><td id="especialidadeSelecionada">-</td></tr>
-                    <tr><td>Plano de Saúde</td><td id="planoSaudeSelecionado">-</td></tr> <!-- Nova linha para o plano de saúde -->
+                    <tr><td>Plano de Saúde</td><td id="planoSaudeSelecionado">-</td></tr>
                 </tbody>
             </table>
         </div>
@@ -115,7 +115,7 @@
             const servicoSelecionado = localStorage.getItem('servicoSelecionado') || '-';
             const exameSelecionado = localStorage.getItem('exameSelecionado') || '-';
             const especialidadeSelecionada = localStorage.getItem('especialidadeSelecionada') || '-';
-            const planoSaudeSelecionado = localStorage.getItem('planoSaudeSelecionado') || '-'; // Recupera o plano de saúde
+            const planoSaudeSelecionado = localStorage.getItem('planoSaudeSelecionado') || '-';
 
             // Preenche os dados na tabela
             document.getElementById('nomeCadastro').textContent = usuarioCadastrado.nome || '-';
@@ -125,9 +125,23 @@
             document.getElementById('servicoSelecionado').textContent = servicoSelecionado;
             document.getElementById('exameSelecionado').textContent = exameSelecionado;
             document.getElementById('especialidadeSelecionada').textContent = especialidadeSelecionada;
-            document.getElementById('planoSaudeSelecionado').textContent = planoSaudeSelecionado; // Preenche o plano de saúde
+            document.getElementById('planoSaudeSelecionado').textContent = planoSaudeSelecionado;
 
-            // Envia o relatório por WhatsApp
+            // Função para limpar os dados do relatório (exceto o cadastro)
+            function limparRelatorio() {
+                localStorage.removeItem('servicoSelecionado');
+                localStorage.removeItem('exameSelecionado');
+                localStorage.removeItem('especialidadeSelecionada');
+                localStorage.removeItem('planoSaudeSelecionado');
+
+                // Atualiza a exibição na tabela
+                document.getElementById('servicoSelecionado').textContent = '-';
+                document.getElementById('exameSelecionado').textContent = '-';
+                document.getElementById('especialidadeSelecionada').textContent = '-';
+                document.getElementById('planoSaudeSelecionado').textContent = '-';
+            }
+
+            // Envia o relatório por WhatsApp e limpa os dados
             document.getElementById('enviarWhatsApp').addEventListener('click', function () {
                 const mensagem = `📋 *Relatório de Agendamento*\n\n` +
                     `*Nome:* ${usuarioCadastrado.nome || '-'}\n` +
@@ -137,8 +151,12 @@
                     `*Serviço:* ${servicoSelecionado}\n` +
                     `*Exame:* ${exameSelecionado}\n` +
                     `*Especialidade:* ${especialidadeSelecionada}\n` +
-                    `*Plano de Saúde:* ${planoSaudeSelecionado}\n`; // Adiciona o plano de saúde na mensagem
+                    `*Plano de Saúde:* ${planoSaudeSelecionado}\n`;
+
                 window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
+
+                // Limpa o relatório após o envio
+                limparRelatorio();
             });
 
             // Volta para a página anterior

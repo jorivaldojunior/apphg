@@ -14,8 +14,9 @@
       <header class="p-4 bg-nubank text-white">
         <div class="flex justify-between items-center">
           <div class="flex items-center">
+            <!-- Botão do perfil -->
             <button
-              onclick="abrirModalPerfil()"
+              onclick="window.location.href = 'perfil.html';"
               class="p-2 bg-perfil rounded-full relative"
             >
               <!-- Ícone de perfil ou foto -->
@@ -25,6 +26,7 @@
               >
                 <!-- Ícone de perfil (ícone de usuário) -->
                 <svg
+                  id="iconePerfil"
                   xmlns="http://www.w3.org/2000/svg"
                   class="h-6 w-6 text-white"
                   fill="none"
@@ -87,7 +89,7 @@
           </div>
         </div>
       </header>
-      <br />
+      <br />    
 
       <!-- Funcionalidades (Rolagem Horizontal) -->
       <div class="mt-6 overflow-x-auto scroll-horizontal px-4">
@@ -303,8 +305,11 @@
       </div>
 
       <!-- Cards de Mensagens (Rolagem Horizontal) -->
-      <div class="mt-6 overflow-x-auto scroll-horizontal px-4">
-        <div class="flex space-x-4 w-max">
+      <div
+        class="mt-6 overflow-x-auto scroll-horizontal px-4"
+        id="card-container"
+      >
+        <div class="flex space-x-4 w-max" id="card-wrapper">
           <!-- Card 1: Convide todo mundo para o Nu -->
           <div class="bg-gray-100 p-4 rounded-lg w-48">
             <div class="flex items-center">
