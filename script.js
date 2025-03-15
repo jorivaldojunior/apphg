@@ -3,7 +3,7 @@
 // Lógica para exibir o botão após 6 segundos
 setTimeout(function () {
   document.getElementById("openFingerprintScreen").classList.remove("hidden");
-}, 6000);
+}, 3000);
 
 // Lógica para abrir a tela de impressão digital
 document.getElementById("openFingerprintScreen").addEventListener("click", function () {
