@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planos de Saúde - Hospital Guararapes</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        .title {
+            color: #16a34a; /* green-600 */
+            font-size: 1.25rem; /* Título menor */
+            font-weight: bold;
+        }
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 12px; /* Cantos mais arredondados */
+            padding: 0.5rem; /* Menos espaço interno */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.75rem; /* Texto menor */
+            height: 60px; /* Altura fixa para os cards */
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card.selected {
+            border: 2px solid #16a34a;
+        }
+        .footer-icons {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 8px;
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Espaçamento entre os ícones */
+            border-top: 1px solid #e2e8f0;
+        }
+        .footer-icons .icon-button {
+            color: #16a34a; /* green-600 */
+            cursor: pointer;
+            transition: color 0.3s;
+            font-size: 24px; /* Ícones menores */
+        }
+        .footer-icons .icon-button:hover {
+            color: #15803d; /* green-700 */
+        }
+    </style>
+</head>
+<body class="p-2">
+    <div class="max-w-md mx-auto">
+        <!-- Título com ícone -->
+        <div class="flex items-center mb-2"> <!-- Menos margem -->
+            <img src="./img/hospital_guararapes_logo.jpg" alt="Ícone de serviços" class="w-12 h-12 mr-2"> <!-- Ícone menor -->
+            <h1 class="title">Planos de Saúde</h1>
+        </div>
+
+        <!-- Cards de seleção de planos de saúde -->
+        <form id="planosSaudeForm" class="space-y-2">
+            <div>
+                <label class="block text-sm font-medium text-green-600">Selecione o plano de saúde:</label>
+                <!-- Grid de 3 colunas -->
+                <div class="mt-1 grid grid-cols-3 gap-2"> <!-- Menos espaçamento entre os cards -->
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="YOUsaúde">
+                        YOUsaúde
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="CompesaSaúde">
+                        CompesaSaúde
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="SulAmérica">
+                        SulAmérica
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="mediservice">
+                        mediservice
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="GEAPsaúde">
+                        GEAPsaúde
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="amil">
+                        amil
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="BradescoSaúde">
+                        BradescoSaúde
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="GAMAsaúde">
+                        GAMAsaúde
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Allianz">
+                        Allianz
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="STELLANTIS">
+                        STELLANTIS
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Golden Cross">
+                        Golden Cross
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="SASSEPE">
+                        SASSEPE
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Unimed">
+                        Unimed
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="Fachesf">
+                        Fachesf
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="CamedSaúde">
+                        CamedSaúde
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="UHSBRAZIL">
+                        UHSBRAZIL
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="SAÚDE RECIFE">
+                        SAÚDE RECIFE
+                    </div>
+                    <div class="card bg-green-400 text-white rounded-lg shadow-md cursor-pointer" data-value="NotreDame Intermédica">
+                        NotreDame Intermédica
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Mensagem de sucesso -->
+        <div id="mensagemSucesso" class="hidden mt-2 p-2 bg-green-100 border border-green-400 text-green-700 rounded-md text-xs"> <!-- Mensagem menor -->
+            Plano de saúde salvo com sucesso!
+        </div>
+    </div>
+
+    <!-- Rodapé com ícones -->
+    <div class="footer-icons">
+        <div class="icon-button" onclick="submitForm()">
+            <i class="fas fa-check"></i> <!-- Ícone de check (salvar plano de saúde) -->
+        </div>
+        <div class="icon-button" onclick="window.location.href='index1.html';">
+            <i class="fas fa-arrow-left"></i> <!-- Ícone de seta para voltar -->
+        </div>
+    </div>
+
+    <script>
+        // Função para enviar o formulário
+        function submitForm() {
+            const form = document.getElementById('planosSaudeForm');
+            const mensagemSucesso = document.getElementById('mensagemSucesso');
+            const cards = document.querySelectorAll('.card');
+
+            let planoSaudeSelecionado = null;
+
+            // Verifica qual card está selecionado
+            cards.forEach(card => {
+                if (card.classList.contains('selected')) {
+                    planoSaudeSelecionado = card.getAttribute('data-value');
+                }
+            });
+
+            if (!planoSaudeSelecionado) {
+                // Exibe a mensagem de alerta
+                if (mensagemSucesso) {
+                    mensagemSucesso.textContent = 'Por favor, selecione um plano de saúde.'; // Texto do alerta
+                    mensagemSucesso.classList.remove('hidden');
+                    mensagemSucesso.classList.remove('bg-green-100', 'border-green-400', 'text-green-700'); // Remove o estilo de sucesso
+                    mensagemSucesso.classList.add('bg-red-100', 'border-red-400', 'text-red-700'); // Adiciona o estilo de alerta
+                }
+                return;
+            }
+
+            // Salva o plano de saúde no Local Storage
+            localStorage.setItem('planoSaudeSelecionado', planoSaudeSelecionado);
+
+            // Exibe a mensagem de sucesso
+            if (mensagemSucesso) {
+                mensagemSucesso.textContent = 'Plano de saúde salvo com sucesso!'; // Texto de sucesso
+                mensagemSucesso.classList.remove('hidden');
+                mensagemSucesso.classList.remove('bg-red-100', 'border-red-400', 'text-red-700'); // Remove o estilo de alerta
+                mensagemSucesso.classList.add('bg-green-100', 'border-green-400', 'text-green-700'); // Adiciona o estilo de sucesso
+            }
+
+            // Limpa a seleção (opcional)
+            cards.forEach(c => c.classList.remove('selected'));
+
+            // Esconde a mensagem após 5 segundos
+            setTimeout(() => {
+                if (mensagemSucesso) {
+                    mensagemSucesso.classList.add('hidden');
+                }
+            }, 5000);
+        }
+
+        // Adiciona um listener para cada card
+        document.addEventListener('DOMContentLoaded', function () {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('click', function () {
+                    // Remove a seleção de todos os cards
+                    cards.forEach(c => c.classList.remove('selected'));
+
+                    // Seleciona o card clicado
+                    card.classList.add('selected');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

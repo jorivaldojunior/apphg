@@ -99,6 +99,7 @@
                     <tr><td>Serviço</td><td id="servicoSelecionado">-</td></tr>
                     <tr><td>Exame</td><td id="exameSelecionado">-</td></tr>
                     <tr><td>Especialidade</td><td id="especialidadeSelecionada">-</td></tr>
+                    <tr><td>Plano de Saúde</td><td id="planoSaudeSelecionado">-</td></tr> <!-- Nova linha para o plano de saúde -->
                 </tbody>
             </table>
         </div>
@@ -109,18 +110,38 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Recupera os dados do localStorage
             const usuarioCadastrado = JSON.parse(localStorage.getItem('usuarioCadastrado')) || {};
+            const servicoSelecionado = localStorage.getItem('servicoSelecionado') || '-';
+            const exameSelecionado = localStorage.getItem('exameSelecionado') || '-';
+            const especialidadeSelecionada = localStorage.getItem('especialidadeSelecionada') || '-';
+            const planoSaudeSelecionado = localStorage.getItem('planoSaudeSelecionado') || '-'; // Recupera o plano de saúde
+
+            // Preenche os dados na tabela
             document.getElementById('nomeCadastro').textContent = usuarioCadastrado.nome || '-';
             document.getElementById('enderecoCadastro').textContent = usuarioCadastrado.endereco || '-';
             document.getElementById('telefoneCadastro').textContent = usuarioCadastrado.telefone || '-';
             document.getElementById('emailCadastro').textContent = usuarioCadastrado.email || '-';
-            document.getElementById('servicoSelecionado').textContent = localStorage.getItem('servicoSelecionado') || '-';
-            document.getElementById('exameSelecionado').textContent = localStorage.getItem('exameSelecionado') || '-';
-            document.getElementById('especialidadeSelecionada').textContent = localStorage.getItem('especialidadeSelecionada') || '-';
+            document.getElementById('servicoSelecionado').textContent = servicoSelecionado;
+            document.getElementById('exameSelecionado').textContent = exameSelecionado;
+            document.getElementById('especialidadeSelecionada').textContent = especialidadeSelecionada;
+            document.getElementById('planoSaudeSelecionado').textContent = planoSaudeSelecionado; // Preenche o plano de saúde
+
+            // Envia o relatório por WhatsApp
             document.getElementById('enviarWhatsApp').addEventListener('click', function () {
-                const mensagem = `📋 *Relatório de Agendamento*\n\n*Nome:* ${usuarioCadastrado.nome || '-'}\n*Endereço:* ${usuarioCadastrado.endereco || '-'}\n*Telefone:* ${usuarioCadastrado.telefone || '-'}\n*E-mail:* ${usuarioCadastrado.email || '-'}\n*Serviço:* ${localStorage.getItem('servicoSelecionado') || '-'}\n*Exame:* ${localStorage.getItem('exameSelecionado') || '-'}\n*Especialidade:* ${localStorage.getItem('especialidadeSelecionada') || '-'}\n`;
+                const mensagem = `📋 *Relatório de Agendamento*\n\n` +
+                    `*Nome:* ${usuarioCadastrado.nome || '-'}\n` +
+                    `*Endereço:* ${usuarioCadastrado.endereco || '-'}\n` +
+                    `*Telefone:* ${usuarioCadastrado.telefone || '-'}\n` +
+                    `*E-mail:* ${usuarioCadastrado.email || '-'}\n` +
+                    `*Serviço:* ${servicoSelecionado}\n` +
+                    `*Exame:* ${exameSelecionado}\n` +
+                    `*Especialidade:* ${especialidadeSelecionada}\n` +
+                    `*Plano de Saúde:* ${planoSaudeSelecionado}\n`; // Adiciona o plano de saúde na mensagem
                 window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
             });
+
+            // Volta para a página anterior
             document.getElementById('voltar').addEventListener('click', function () {
                 window.location.href = "index1.html";
             });
