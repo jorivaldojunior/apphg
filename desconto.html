@@ -204,9 +204,21 @@
     // Função para reivindicar o desconto
     function reivindicarDesconto() {
       if (agendamentosValidos >= agendamentosNecessarios) {
+        // Redireciona para o WhatsApp com a mensagem de reivindicação
+        const mensagem = `*Reivindicação de Desconto*\n\nOlá, gostaria de reivindicar meu desconto de 100% após 10 agendamentos válidos.`;
+        const numero = "5581991152307"; // Número de telefone no formato internacional
+        const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(mensagem)}`;
+
+        window.open(url, "_blank");
+
+        // Zera o contador de agendamentos
+        agendamentosValidos = 0;
+        localStorage.setItem('agendamentosValidos', agendamentosValidos); // Atualiza o localStorage
+        contadorAgendamentos.textContent = agendamentosValidos;
+
         // Exibe a mensagem de sucesso
         const mensagemSucesso = document.getElementById('mensagemSucesso');
-        mensagemSucesso.textContent = "Desconto reivindicado com sucesso! Agende sua consulta gratuita.";
+        mensagemSucesso.textContent = "Desconto reivindicado com sucesso! O contador foi reiniciado.";
         mensagemSucesso.classList.remove('hidden');
 
         // Oculta a mensagem de sucesso após 3 segundos

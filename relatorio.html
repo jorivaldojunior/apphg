@@ -100,6 +100,7 @@
                     <tr><td>Exame</td><td id="exameSelecionado">-</td></tr>
                     <tr><td>Especialidade</td><td id="especialidadeSelecionada">-</td></tr>
                     <tr><td>Plano de Saúde</td><td id="planoSaudeSelecionado">-</td></tr>
+                    <tr><td>Número de Protocolo</td><td id="numeroProtocolo">-</td></tr>
                 </tbody>
             </table>
         </div>
@@ -127,6 +128,11 @@
             document.getElementById('especialidadeSelecionada').textContent = especialidadeSelecionada;
             document.getElementById('planoSaudeSelecionado').textContent = planoSaudeSelecionado;
 
+            // Função para gerar um número de protocolo aleatório
+            function gerarNumeroProtocolo() {
+                return Math.floor(100000 + Math.random() * 900000); // Gera um número de 6 dígitos
+            }
+
             // Função para limpar os dados do relatório (exceto o cadastro)
             function limparRelatorio() {
                 localStorage.removeItem('servicoSelecionado');
@@ -139,11 +145,15 @@
                 document.getElementById('exameSelecionado').textContent = '-';
                 document.getElementById('especialidadeSelecionada').textContent = '-';
                 document.getElementById('planoSaudeSelecionado').textContent = '-';
+                document.getElementById('numeroProtocolo').textContent = '-';
             }
 
             // Envia o relatório por WhatsApp e limpa os dados
             document.getElementById('enviarWhatsApp').addEventListener('click', function () {
-                const mensagem = `📋 *Relatório de Agendamento*\n\n` +
+                const numeroProtocolo = gerarNumeroProtocolo();
+                document.getElementById('numeroProtocolo').textContent = numeroProtocolo;
+
+                const mensagem = `*Relatório de Agendamento*\n\n` +
                     `*Nome:* ${usuarioCadastrado.nome || '-'}\n` +
                     `*Endereço:* ${usuarioCadastrado.endereco || '-'}\n` +
                     `*Telefone:* ${usuarioCadastrado.telefone || '-'}\n` +
@@ -151,9 +161,12 @@
                     `*Serviço:* ${servicoSelecionado}\n` +
                     `*Exame:* ${exameSelecionado}\n` +
                     `*Especialidade:* ${especialidadeSelecionada}\n` +
-                    `*Plano de Saúde:* ${planoSaudeSelecionado}\n`;
+                    `*Plano de Saúde:* ${planoSaudeSelecionado}\n` +
+                    `*Número de Protocolo:* ${numeroProtocolo}\n`;
 
-                window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
+                // Número fixo do WhatsApp
+                const numeroWhatsApp = '5581991152307'; // Número no formato internacional (55 para Brasil)
+                window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`, '_blank');
 
                 // Limpa o relatório após o envio
                 limparRelatorio();
