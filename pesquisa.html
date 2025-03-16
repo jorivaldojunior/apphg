@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pesquisa de Satisfação</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-green-600">
+  <div class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="p-4 bg-nubank text-white">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center">
+          <!-- Logo e Título -->
+          <div class="flex items-center">
+            <img src="./img/hospital_guararapes_logo.jpg" alt="Logo" class="h-8 w-8" />
+            <h1 class="text-lg font-semibold ml-2">Pesquisa de Satisfação</h1>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="p-4 flex-grow">
+      <div class="bg-transparent p-8 rounded-lg w-full max-w-md mx-auto">
+        <!-- Pergunta 1 -->
+        <div class="mb-6">
+          <label class="block text-white text-sm font-bold mb-2">
+            Como você avalia nosso serviço?
+          </label>
+          <div class="flex space-x-4 justify-center">
+            <!-- Emoji 1 -->
+            <button
+              type="button"
+              class="flex flex-col items-center"
+              onclick="selecionarEmoji('😠', 'Péssimo', 'emoji1')"
+            >
+              <div id="emoji1" class="bg-white p-3 rounded-full flex items-center justify-center hover:bg-green-50 transition-colors">
+                <span class="text-2xl">😠</span>
+              </div>
+              <span class="mt-2 text-xs text-white">Péssimo</span>
+            </button>
+
+            <!-- Emoji 2 -->
+            <button
+              type="button"
+              class="flex flex-col items-center"
+              onclick="selecionarEmoji('😐', 'Regular', 'emoji2')"
+            >
+              <div id="emoji2" class="bg-white p-3 rounded-full flex items-center justify-center hover:bg-green-50 transition-colors">
+                <span class="text-2xl">😐</span>
+              </div>
+              <span class="mt-2 text-xs text-white">Regular</span>
+            </button>
+
+            <!-- Emoji 3 -->
+            <button
+              type="button"
+              class="flex flex-col items-center"
+              onclick="selecionarEmoji('😊', 'Bom', 'emoji3')"
+            >
+              <div id="emoji3" class="bg-white p-3 rounded-full flex items-center justify-center hover:bg-green-50 transition-colors">
+                <span class="text-2xl">😊</span>
+              </div>
+              <span class="mt-2 text-xs text-white">Bom</span>
+            </button>
+
+            <!-- Emoji 4 -->
+            <button
+              type="button"
+              class="flex flex-col items-center"
+              onclick="selecionarEmoji('😍', 'Excelente', 'emoji4')"
+            >
+              <div id="emoji4" class="bg-white p-3 rounded-full flex items-center justify-center hover:bg-green-50 transition-colors">
+                <span class="text-2xl">😍</span>
+              </div>
+              <span class="mt-2 text-xs text-white">Excelente</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Pergunta 2 -->
+        <div class="mb-6">
+          <label class="block text-white text-sm font-bold mb-2">
+            Deixe um comentário:
+          </label>
+          <textarea
+            id="comentario"
+            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+            rows="4"
+            placeholder="Escreva aqui..."
+          ></textarea>
+        </div>
+
+        <!-- Mensagem de sucesso -->
+        <div
+          id="mensagemSucesso"
+          class="hidden mt-2 mb-4 p-2 bg-green-100 border border-green-400 text-green-700 rounded-md text-sm"
+        >
+          Pesquisa enviada com sucesso! Redirecionando para o WhatsApp...
+        </div>
+
+        <!-- Mensagem de erro -->
+        <div
+          id="mensagemErro"
+          class="hidden mt-2 mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded-md text-sm"
+        >
+          Por favor, selecione uma avaliação e insira um comentário.
+        </div>
+
+        <!-- Botões de ação -->
+        <div class="flex justify-center space-x-8">
+          <!-- Botão Voltar -->
+          <button
+            onclick="window.location.href = 'index1.html';"
+            class="flex flex-col items-center"
+          >
+            <div class="bg-white p-3 rounded-full flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+            </div>
+            <span class="mt-2 text-xs text-white">Voltar</span>
+          </button>
+
+          <!-- Botão Enviar via WhatsApp -->
+          <button
+            onclick="enviarPesquisaWhatsApp()"
+            class="flex flex-col items-center"
+          >
+            <div class="bg-white p-3 rounded-full flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 2a10 10 0 0 0-8.464 15.263L2 22l5.03-1.385A10 10 0 1 0 12 2Z"
+                />
+                <path
+                  d="M16.243 16.243a4 4 0 0 1-5.656 0l-1.415-1.415a4 4 0 0 1 0-5.656"
+                />
+              </svg>
+            </div>
+            <span class="mt-2 text-xs text-white">Enviar</span>
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    let emojiSelecionado = null;
+    let textoEmojiSelecionado = null;
+    let emojiAtualSelecionado = null;
+
+    // Função para selecionar o emoji
+    function selecionarEmoji(emoji, texto, idEmoji) {
+      // Remove a seleção do emoji anterior (se houver)
+      if (emojiAtualSelecionado) {
+        document.getElementById(emojiAtualSelecionado).classList.remove('bg-green-100');
+      }
+
+      // Adiciona a seleção ao emoji clicado
+      const emojiDiv = document.getElementById(idEmoji);
+      emojiDiv.classList.add('bg-green-100');
+
+      // Atualiza as variáveis globais
+      emojiSelecionado = emoji;
+      textoEmojiSelecionado = texto;
+      emojiAtualSelecionado = idEmoji;
+    }
+
+    // Função para limpar os campos
+    function limparCampos() {
+      // Remove a seleção do emoji
+      if (emojiAtualSelecionado) {
+        document.getElementById(emojiAtualSelecionado).classList.remove('bg-green-100');
+      }
+
+      // Limpa as variáveis globais
+      emojiSelecionado = null;
+      textoEmojiSelecionado = null;
+      emojiAtualSelecionado = null;
+
+      // Limpa o campo de comentário
+      document.getElementById('comentario').value = '';
+    }
+
+    // Função para enviar a pesquisa via WhatsApp
+    function enviarPesquisaWhatsApp() {
+      const comentario = document.getElementById('comentario').value;
+
+      // Verifica se o emoji e o comentário foram preenchidos
+      if (!emojiSelecionado || !comentario.trim()) {
+        // Exibe a mensagem de erro
+        const mensagemErro = document.getElementById('mensagemErro');
+        mensagemErro.classList.remove('hidden');
+
+        // Oculta a mensagem de erro após 3 segundos
+        setTimeout(() => {
+          mensagemErro.classList.add('hidden');
+        }, 3000);
+
+        return;
+      }
+
+      // Exibe a mensagem de sucesso
+      const mensagemSucesso = document.getElementById('mensagemSucesso');
+      mensagemSucesso.classList.remove('hidden');
+
+      // Aguarda 3 segundos antes de redirecionar
+      setTimeout(() => {
+        const mensagem = `*Pesquisa de satisfação do app agendamento online*\n\nAvaliação: ${textoEmojiSelecionado} ${emojiSelecionado}\nComentário: ${comentario}`;
+        const numero = "5581991152307"; // Número de telefone no formato internacional
+        const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(mensagem)}`;
+
+        window.open(url, "_blank");
+
+        // Limpa os campos após o desaparecimento da mensagem de sucesso
+        limparCampos();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
