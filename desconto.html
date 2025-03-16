@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cartão de Desconto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-green-600">
+  <div class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="p-4 bg-nubank text-white">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center">
+          <!-- Logo e Título -->
+          <div class="flex items-center">
+            <img src="./img/hospital_guararapes_logo.jpg" alt="Logo" class="h-12 w-12" />
+            <h1 class="text-lg font-semibold ml-2">Cartão de Desconto</h1>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="p-4 flex-grow">
+      <div class="bg-transparent p-8 rounded-lg w-full max-w-md mx-auto">
+        <!-- Explicação do desconto -->
+        <div class="mb-6">
+          <h2 class="text-white text-lg font-bold mb-2">Como funciona?</h2>
+          <p class="text-white text-sm">
+            Usuários particulares que agendam online e não possuem plano de saúde têm direito a um desconto de 100% em qualquer consulta após 10 agendamentos válidos. O 11º agendamento é gratuito!
+          </p>
+        </div>
+
+        <!-- Contador de agendamentos -->
+        <div class="mb-6">
+          <div class="flex justify-center">
+            <div class="bg-white p-4 rounded-full flex items-center justify-center">
+              <span class="text-2xl text-green-600">📅</span>
+              <span id="contadorAgendamentos" class="text-2xl text-green-600 ml-2">0</span>
+            </div>
+          </div>
+          <p class="text-white text-sm text-center mt-2">Agendamentos válidos</p>
+        </div>
+
+        <!-- Campo para inserir o código de 4 dígitos -->
+        <div class="mb-6">
+          <label class="block text-white text-sm font-bold mb-2">
+            Insira o código de 4 dígitos fornecido pela atendente:
+          </label>
+          <input
+            type="text"
+            id="codigoAgendamento"
+            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+            maxlength="4"
+            placeholder="Digite o código"
+          />
+        </div>
+
+        <!-- Mensagem de sucesso -->
+        <div
+          id="mensagemSucesso"
+          class="hidden mt-2 mb-4 p-2 bg-green-100 border border-green-400 text-green-700 rounded-md text-sm"
+        >
+          Agendamento validado com sucesso! Agendamentos válidos: <span id="agendamentosAtuais"></span>.
+        </div>
+
+        <!-- Mensagem de erro -->
+        <div
+          id="mensagemErro"
+          class="hidden mt-2 mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded-md text-sm"
+        >
+          Código inválido. Tente novamente.
+        </div>
+
+        <!-- Botões de ação -->
+        <div class="flex justify-center space-x-8">
+          <!-- Botão Voltar -->
+          <button
+            onclick="window.location.href = 'index1.html';"
+            class="flex flex-col items-center"
+          >
+            <div class="bg-white p-3 rounded-full flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+            </div>
+            <span class="mt-2 text-xs text-white">Voltar</span>
+          </button>
+
+          <!-- Ícone de Validar Código -->
+          <button
+            onclick="validarCodigo()"
+            class="flex flex-col items-center"
+          >
+            <div class="bg-white p-3 rounded-full flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                />
+              </svg>
+            </div>
+            <span class="mt-2 text-xs text-white">Validar</span>
+          </button>
+
+          <!-- Botão Enviar -->
+          <button
+            onclick="reivindicarDesconto()"
+            class="flex flex-col items-center"
+          >
+            <div class="bg-white p-3 rounded-full flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 2a10 10 0 0 0-8.464 15.263L2 22l5.03-1.385A10 10 0 1 0 12 2Z"
+                />
+                <path
+                  d="M16.243 16.243a4 4 0 0 1-5.656 0l-1.415-1.415a4 4 0 0 1 0-5.656"
+                />
+              </svg>
+            </div>
+            <span class="mt-2 text-xs text-white">Enviar</span>
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Recupera o número de agendamentos válidos do localStorage
+    let agendamentosValidos = parseInt(localStorage.getItem('agendamentosValidos')) || 0;
+    const agendamentosNecessarios = 10;
+
+    // Código válido (substitua por lógica real, como validação no backend)
+    const codigoValido = "1234"; // Código de exemplo
+
+    // Atualiza o contador de agendamentos
+    const contadorAgendamentos = document.getElementById('contadorAgendamentos');
+    contadorAgendamentos.textContent = agendamentosValidos;
+
+    // Função para validar o código de agendamento
+    function validarCodigo() {
+      const codigoInserido = document.getElementById('codigoAgendamento').value;
+
+      if (codigoInserido === codigoValido) {
+        // Incrementa o número de agendamentos válidos
+        agendamentosValidos++;
+        localStorage.setItem('agendamentosValidos', agendamentosValidos); // Salva no localStorage
+        contadorAgendamentos.textContent = agendamentosValidos;
+
+        // Exibe a mensagem de sucesso
+        const mensagemSucesso = document.getElementById('mensagemSucesso');
+        const agendamentosAtuais = document.getElementById('agendamentosAtuais');
+        agendamentosAtuais.textContent = agendamentosValidos;
+        mensagemSucesso.classList.remove('hidden');
+
+        // Oculta a mensagem de sucesso após 3 segundos
+        setTimeout(() => {
+          mensagemSucesso.classList.add('hidden');
+        }, 3000);
+
+        // Limpa o campo de código
+        document.getElementById('codigoAgendamento').value = '';
+      } else {
+        // Exibe a mensagem de erro
+        const mensagemErro = document.getElementById('mensagemErro');
+        mensagemErro.classList.remove('hidden');
+
+        // Oculta a mensagem de erro após 3 segundos
+        setTimeout(() => {
+          mensagemErro.classList.add('hidden');
+        }, 3000);
+      }
+    }
+
+    // Função para reivindicar o desconto
+    function reivindicarDesconto() {
+      if (agendamentosValidos >= agendamentosNecessarios) {
+        // Exibe a mensagem de sucesso
+        const mensagemSucesso = document.getElementById('mensagemSucesso');
+        mensagemSucesso.textContent = "Desconto reivindicado com sucesso! Agende sua consulta gratuita.";
+        mensagemSucesso.classList.remove('hidden');
+
+        // Oculta a mensagem de sucesso após 3 segundos
+        setTimeout(() => {
+          mensagemSucesso.classList.add('hidden');
+        }, 3000);
+      } else {
+        // Exibe a mensagem de erro
+        const mensagemErro = document.getElementById('mensagemErro');
+        const agendamentosFaltantes = agendamentosNecessarios - agendamentosValidos;
+        mensagemErro.textContent = `Você ainda não tem direito ao desconto. Faltam ${agendamentosFaltantes} agendamentos.`;
+        mensagemErro.classList.remove('hidden');
+
+        // Oculta a mensagem de erro após 3 segundos
+        setTimeout(() => {
+          mensagemErro.classList.add('hidden');
+        }, 3000);
+      }
+    }
+  </script>
+</body>
+</html>
