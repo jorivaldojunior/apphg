@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Como Fazer o Agendamento</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-green-600">
+  <div class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="p-4 bg-nubank text-white">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center">
+          <!-- Logo e Título -->
+          <div class="flex items-center">
+            <img src="./img/hospital_guararapes_logo.jpg" alt="Logo" class="h-12 w-12" />
+            <h1 class="text-lg font-semibold ml-2">Como Fazer o Agendamento</h1>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="p-4 flex-grow">
+      <div class="bg-transparent p-8 rounded-lg w-full max-w-md mx-auto">
+        <!-- Passo a Passo -->
+        <div class="mb-6">
+          <h2 class="text-white text-lg font-bold mb-2">Passo a Passo:</h2>
+          <ol class="text-white text-sm list-decimal list-inside">
+            <li class="mb-2">Clique no ícone de <strong>Cadastro</strong> e preencha todos os campos solicitados.</li>
+            <li class="mb-2">Após o cadastro, clique na seta para voltar à tela principal.</li>
+            <li class="mb-2">Escolha o ícone correspondente ao serviço desejado (consultas, exames, etc.).</li>
+            <li class="mb-2">Para visualizar seus agendamentos, clique no ícone de <strong>Agendamentos</strong> no topo da tela.</li>
+             <li class="mb-2">Ao abrir a tela você poderá visualizar seu agendamento e clicando no ícone de <strong>WhatsApp</strong> será enviado com sucesso seu pedido.</li>
+             <li class="mb-2">Pronto, depois de seguir esses passos seu agendamento será direcionado para um de nossos atendentes é só aguarda.</li>
+          </ol>
+        </div>
+
+        <!-- Campo de Dúvidas -->
+        <div class="mb-6">
+          <h2 class="text-white text-lg font-bold mb-2">Ainda tem dúvidas?</h2>
+          <textarea id="duvida" class="w-full p-2 rounded-lg" placeholder="Digite sua dúvida e clique em suporte que te ajudaremos..." rows="4"></textarea>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="flex justify-center space-x-8">
+          <!-- Botão Voltar -->
+          <button
+            onclick="window.location.href = 'index1.html';"
+            class="flex flex-col items-center"
+          >
+            <div class="bg-white p-3 rounded-full flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+            </div>
+            <span class="mt-2 text-xs text-white">Voltar</span>
+          </button>
+
+          <!-- Botão Enviar via WhatsApp -->
+          <button
+            onclick="enviarDuvidaWhatsApp()"
+            class="flex flex-col items-center"
+          >
+            <div class="bg-white p-3 rounded-full flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 2a10 10 0 0 0-8.464 15.263L2 22l5.03-1.385A10 10 0 1 0 12 2Z"
+                />
+                <path
+                  d="M16.243 16.243a4 4 0 0 1-5.656 0l-1.415-1.415a4 4 0 0 1 0-5.656"
+                />
+              </svg>
+            </div>
+            <span class="mt-2 text-xs text-white">Suporte</span>
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function enviarDuvidaWhatsApp() {
+      const duvida = document.getElementById('duvida').value;
+      if (duvida.trim() === "") {
+        alert("Por favor, digite sua dúvida antes de enviar.");
+        return;
+      }
+      const mensagem = encodeURIComponent(`Olá, tenho uma dúvida sobre o agendamento: ${duvida}`);
+      const numero = "5581991152307"; // Número de telefone no formato internacional
+      const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(mensagem)}`;
+
+        window.open(url, "_blank");
+    }
+  </script>
+</body>
+</html>
