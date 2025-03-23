@@ -6,6 +6,12 @@
   <title>Como Fazer o Agendamento</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Estilo personalizado para as mensagens */
+    #mensagemSucesso, #mensagemErro {
+      transition: opacity 0.5s ease-in-out;
+    }
+  </style>
 </head>
 <body class="bg-green-600">
   <div class="min-h-screen flex flex-col">
@@ -30,11 +36,11 @@
           <h2 class="text-white text-lg font-bold mb-2">Passo a Passo:</h2>
           <ol class="text-white text-sm list-decimal list-inside">
             <li class="mb-2">Clique no ícone de <strong>Cadastro</strong> e preencha todos os campos solicitados.</li>
-            <li class="mb-2">Após o cadastro, clique na seta para voltar à tela principal.</li>
+            <li class="mb-2">Após o cadastro, clique no ícone de salvar e depois poderá retornar clicando na seta.</li>
             <li class="mb-2">Escolha o ícone correspondente ao serviço desejado (consultas, exames, etc.).</li>
             <li class="mb-2">Para visualizar seus agendamentos, clique no ícone de <strong>Agendamentos</strong> no topo da tela.</li>
-             <li class="mb-2">Ao abrir a tela você poderá visualizar seu agendamento e clicando no ícone de <strong>WhatsApp</strong> será enviado com sucesso seu pedido.</li>
-             <li class="mb-2">Pronto, depois de seguir esses passos seu agendamento será direcionado para um de nossos atendentes é só aguarda.</li>
+            <li class="mb-2">Ao abrir a tela, você poderá visualizar seu agendamento e clicando no ícone de <strong>WhatsApp</strong> será enviado com sucesso seu pedido.</li>
+            <li class="mb-2">Pronto, depois de seguir esses passos, seu agendamento será direcionado para um de nossos atendentes. É só aguardar.</li>
           </ol>
         </div>
 
@@ -43,6 +49,12 @@
           <h2 class="text-white text-lg font-bold mb-2">Ainda tem dúvidas?</h2>
           <textarea id="duvida" class="w-full p-2 rounded-lg" placeholder="Digite sua dúvida e clique em suporte que te ajudaremos..." rows="4"></textarea>
         </div>
+
+        <!-- Mensagem de sucesso (inicialmente oculta) -->
+        <div id="mensagemSucesso" class="hidden mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg"></div>
+
+        <!-- Mensagem de erro (inicialmente oculta) -->
+        <div id="mensagemErro" class="hidden mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg"></div>
 
         <!-- Botões de Ação -->
         <div class="flex justify-center space-x-8">
@@ -104,17 +116,35 @@
     function enviarDuvidaWhatsApp() {
       const duvida = document.getElementById('duvida').value;
       if (duvida.trim() === "") {
-        alert("Por favor, digite sua dúvida antes de enviar.");
+        // Exibe a mensagem de erro
+        const mensagemErro = document.getElementById('mensagemErro');
+        mensagemErro.textContent = "Por favor, digite sua dúvida antes de enviar.";
+        mensagemErro.classList.remove('hidden');
+
+        // Oculta a mensagem de erro após 3 segundos
+        setTimeout(() => {
+          mensagemErro.classList.add('hidden');
+        }, 3000);
         return;
       }
-      const mensagem = `Olá, tenho uma dúvida sobre o agendamento: ${duvida}`; // Texto da mensagem
+
+      const mensagem = `Olá, tenho uma dúvida sobre o agendamento: ${duvida}`;
       const numero = "5581991152307"; // Número de telefone no formato internacional
-      const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(mensagem)}`; // Codifica a mensagem apenas uma vez
-  
-      window.open(url, "_blank"); // Abre o WhatsApp em uma nova aba
+      const url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(mensagem)}`;
+
+      // Abre o WhatsApp em uma nova aba
+      window.open(url, "_blank");
+
+      // Exibe a mensagem de sucesso
+      const mensagemSucesso = document.getElementById('mensagemSucesso');
+      mensagemSucesso.textContent = "Dúvida enviada com sucesso! Verifique o WhatsApp.";
+      mensagemSucesso.classList.remove('hidden');
+
+      // Oculta a mensagem de sucesso após 3 segundos
+      setTimeout(() => {
+        mensagemSucesso.classList.add('hidden');
+      }, 3000);
     }
   </script>
-
-  
 </body>
 </html>
