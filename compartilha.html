@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compartilhar o App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Estilo personalizado para as mensagens */
+    #mensagemSucesso, #mensagemErro {
+      transition: opacity 0.5s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-green-600">
+  <div class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="p-4 bg-nubank text-white">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center">
+          <!-- Logo e Título -->
+          <div class="flex items-center">
+            <img src="./img/hospital_guararapes_logo.jpg" alt="Logo" class="h-12 w-12" />
+            <h1 class="text-lg font-semibold ml-2">Compartilhar o App</h1>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="p-4 flex-grow">
+      <div class="bg-transparent p-8 rounded-lg w-full max-w-md mx-auto">
+        <!-- Passo a Passo -->
+        <div class="mb-6">
+          <h2 class="text-white text-lg font-bold mb-2">Como Compartilhar o App:</h2>
+          <ol class="text-white text-sm list-decimal list-inside">
+            <li class="mb-2">Clique no botão <strong>Compartilhar</strong> abaixo.</li>
+            <li class="mb-2">O WhatsApp será aberto com uma mensagem pronta.</li>
+            <li class="mb-2">Escolha o contato ou grupo para quem deseja enviar o link.</li>
+            <li class="mb-2">Pronto! Seus amigos receberão o link do app e poderão agendar consultas também.</li>
+          </ol>
+        </div>
+
+        <!-- Campo para inserir o número do amigo (opcional) -->
+        <div class="mb-6">
+          <h2 class="text-white text-lg font-bold mb-2">Compartilhar com um número específico:</h2>
+          <input
+            id="numeroAmigo"
+            type="text"
+            class="w-full p-2 rounded-lg"
+            placeholder="Digite o número do seu amigo (com DDD)"
+          />
+        </div>
+
+        <!-- Mensagem de sucesso (inicialmente oculta) -->
+        <div id="mensagemSucesso" class="hidden mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg"></div>
+
+        <!-- Mensagem de erro (inicialmente oculta) -->
+        <div id="mensagemErro" class="hidden mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg"></div>
+
+        <!-- Botões de Ação -->
+        <div class="flex justify-center space-x-8 mt-6">
+          <!-- Botão Voltar -->
+          <button
+            onclick="window.location.href = 'index1.html';"
+            class="flex flex-col items-center"
+          >
+            <div class="bg-white p-3 rounded-full flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+            </div>
+            <span class="mt-2 text-xs text-white">Voltar</span>
+          </button>
+
+          <!-- Botão Compartilhar -->
+          <button
+            onclick="compartilharApp()"
+            class="flex flex-col items-center"
+          >
+            <div class="bg-white p-3 rounded-full flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 2a10 10 0 0 0-8.464 15.263L2 22l5.03-1.385A10 10 0 1 0 12 2Z"
+                />
+                <path
+                  d="M16.243 16.243a4 4 0 0 1-5.656 0l-1.415-1.415a4 4 0 0 1 0-5.656"
+                />
+              </svg>
+            </div>
+            <span class="mt-2 text-xs text-white">Compartilhar</span>
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function compartilharApp() {
+      const numeroAmigo = document.getElementById('numeroAmigo').value;
+      const linkApp = "https://jorivaldojunior.github.io/apphg/"; // Link do app
+      let urlWhatsApp;
+
+      if (numeroAmigo.trim() !== "") {
+        // Se o número do amigo foi fornecido, abre o WhatsApp diretamente para esse número
+        urlWhatsApp = `https://api.whatsapp.com/send?phone=${numeroAmigo}&text=${encodeURIComponent(
+          `Olá, confira este app incrível para agendamento de consultas: ${linkApp}`
+        )}`;
+      } else {
+        // Se nenhum número foi fornecido, abre o WhatsApp para escolher manualmente o contato
+        urlWhatsApp = `https://api.whatsapp.com/send?text=${encodeURIComponent(
+          `Olá, confira este app incrível para agendamento de consultas: ${linkApp}`
+        )}`;
+      }
+
+      // Abre o WhatsApp em uma nova aba
+      window.open(urlWhatsApp, "_blank");
+
+      // Exibe a mensagem de sucesso
+      const mensagemSucesso = document.getElementById('mensagemSucesso');
+      mensagemSucesso.textContent = "Link compartilhado com sucesso! Verifique o WhatsApp.";
+      mensagemSucesso.classList.remove('hidden');
+
+      // Oculta a mensagem de sucesso após 3 segundos
+      setTimeout(() => {
+        mensagemSucesso.classList.add('hidden');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
