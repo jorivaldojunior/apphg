@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function initPatternLock() {
     const points = document.querySelectorAll("[data-point]");
     const linesContainer = document.getElementById("linesContainer");
+    const patternContainer = document.querySelector('.pattern-container');
     let selectedPoints = [];
     let isDrawing = false;
     let lastPoint = null;
@@ -114,74 +115,21 @@ document.addEventListener('DOMContentLoaded', function () {
       linesContainer.appendChild(line);
     }
 
-    // Função para detectar qual ponto está sendo tocado
-    function getPointFromTouch(touch) {
-      const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
-      for (let element of elements) {
-        if (element.hasAttribute('data-point')) {
-          return element;
-        }
-      }
-      return null;
-    }
-
-    // Eventos de toque
-    document.addEventListener('touchstart', (e) => {
-      if (e.target.closest('.pattern-container')) {
-        e.preventDefault();
-        isDrawing = true;
-        const point = getPointFromTouch(e.touches[0]);
-        if (point) {
-          addPoint(point);
-        }
-      }
-    });
-
-    document.addEventListener('touchmove', (e) => {
-      if (isDrawing) {
-        e.preventDefault();
-        const point = getPointFromTouch(e.touches[0]);
-        if (point) {
-          addPoint(point);
-        }
-      }
-    });
-
-    document.addEventListener('touchend', () => {
-      isDrawing = false;
-      lastPoint = null;
-    });
-
-    // Eventos de mouse (para desktop)
-    document.addEventListener('mousedown', (e) => {
-      if (e.target.closest('.pattern-container')) {
-        isDrawing = true;
-        const point = getPointFromTouch(e);
-        if (point) {
-          addPoint(point);
-        }
-      }
-    });
-
-    document.addEventListener('mousemove', (e) => {
-      if (isDrawing) {
-        const point = getPointFromTouch(e);
-        if (point) {
-          addPoint(point);
-        }
-      }
-    });
-
-    document.addEventListener('mouseup', () => {
-      isDrawing = false;
-      lastPoint = null;
-    });
-
-    // Helper para elementosFromPoint com coordenadas do mouse
-    function getPointFromTouch(touchOrMouse) {
-      const x = touchOrMouse.clientX || touchOrMouse.pageX;
-      const y = touchOrMouse.clientY || touchOrMouse.pageY;
+    // Função melhorada para detectar qual ponto está sendo tocado
+    function getPointFromCoordinates(x, y) {
+      // Cria um elemento temporário para as coordenadas
+      const tempElement = document.createElement('div');
+      tempElement.style.position = 'fixed';
+      tempElement.style.left = x + 'px';
+      tempElement.style.top = y + 'px';
+      tempElement.style.width = '1px';
+      tempElement.style.height = '1px';
+      document.body.appendChild(tempElement);
+      
+      // Usa elementsFromPoint com as coordenadas exatas
       const elements = document.elementsFromPoint(x, y);
+      document.body.removeChild(tempElement);
+      
       for (let element of elements) {
         if (element.hasAttribute('data-point')) {
           return element;
@@ -189,6 +137,73 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       return null;
     }
+
+    // Função para processar toque/movimento
+    function processInteraction(x, y) {
+      if (!isDrawing) return;
+      
+      const point = getPointFromCoordinates(x, y);
+      if (point) {
+        addPoint(point);
+      }
+    }
+
+    // Eventos de toque para mobile
+    patternContainer.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      isDrawing = true;
+      const touch = e.touches[0];
+      const point = getPointFromCoordinates(touch.clientX, touch.clientY);
+      if (point) {
+        addPoint(point);
+      }
+    });
+
+    patternContainer.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      processInteraction(touch.clientX, touch.clientY);
+    });
+
+    patternContainer.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      isDrawing = false;
+      lastPoint = null;
+    });
+
+    // Eventos de mouse para desktop
+    patternContainer.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      isDrawing = true;
+      const point = getPointFromCoordinates(e.clientX, e.clientY);
+      if (point) {
+        addPoint(point);
+      }
+    });
+
+    patternContainer.addEventListener('mousemove', (e) => {
+      e.preventDefault();
+      processInteraction(e.clientX, e.clientY);
+    });
+
+    patternContainer.addEventListener('mouseup', (e) => {
+      e.preventDefault();
+      isDrawing = false;
+      lastPoint = null;
+    });
+
+    // Prevenir comportamento padrão de scroll
+    patternContainer.addEventListener('touchstart', (e) => {
+      if (e.target.closest('.pattern-container')) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    patternContainer.addEventListener('touchmove', (e) => {
+      if (e.target.closest('.pattern-container')) {
+        e.preventDefault();
+      }
+    }, { passive: false });
   }
 
   // Funções para abrir redes sociais
