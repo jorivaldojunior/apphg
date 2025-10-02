@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Hospital Guararapes</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        .title {
+            color: #16a34a; /* green-600 */
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 8px;
+        }
+        .footer-icons {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* Espaçamento entre os ícones */
+            border-top: 1px solid #e2e8f0;
+        }
+        .footer-icons .icon-button {
+            color: #16a34a; /* green-600 */
+            cursor: pointer;
+            transition: color 0.3s;
+            font-size: 32px; /* Ícones maiores */
+        }
+        .footer-icons .icon-button:hover {
+            color: #15803d; /* green-700 */
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="max-w-md mx-auto">
+        <!-- Título com ícone -->
+        <div class="flex items-center mb-6">
+            <img src="./img/logohg1.png" alt="Ícone de cadastro" class="w-24 h-24 mr-2">
+            <h1 class="title">Cadastro Usuario</h1>
+        </div>
+
+        <!-- Formulário de cadastro -->
+        <form id="cadastroForm" class="space-y-4">
+            <div>
+                <label for="nome" class="block text-sm font-medium text-green-600">Nome Completo</label>
+                <input type="text" id="nome" name="nome" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+            <div>
+                <label for="endereco" class="block text-sm font-medium text-green-600">Endereço</label>
+                <input type="text" id="endereco" name="endereco" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+            <div>
+                <label for="telefone" class="block text-sm font-medium text-green-600">Telefone</label>
+                <input type="tel" id="telefone" name="telefone" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+            <div>
+                <label for="email" class="block text-sm font-medium text-green-600">Email</label>
+                <input type="email" id="email" name="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+            </div>
+        </form>
+
+        <!-- Mensagem de sucesso -->
+        <div id="mensagemSucesso" class="hidden mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
+            Cadastro salvo com sucesso!
+        </div>
+    </div>
+
+    <!-- Rodapé com ícones -->
+    <div class="footer-icons">
+        <div class="icon-button" onclick="submitForm()">
+            <i class="fas fa-check"></i> <!-- Ícone de check (cadastrar) -->
+        </div>
+        <div class="icon-button" onclick="window.location.href='index1.html';">
+            <i class="fas fa-arrow-left"></i> <!-- Ícone de seta para voltar -->
+        </div>
+    </div>
+
+    <script>
+        // Função para enviar o formulário
+        function submitForm() {
+            const form = document.getElementById('cadastroForm');
+            const mensagemSucesso = document.getElementById('mensagemSucesso');
+    
+            if (form) {
+                // Captura os dados do formulário
+                const nome = document.getElementById('nome').value;
+                const endereco = document.getElementById('endereco').value;
+                const telefone = document.getElementById('telefone').value;
+                const email = document.getElementById('email').value;
+    
+                // Verifica se todos os campos foram preenchidos
+                if (!nome || !endereco || !telefone || !email) {
+                    // Exibe a mensagem de alerta
+                    if (mensagemSucesso) {
+                        mensagemSucesso.textContent = 'Por favor, preencha todos os campos.'; // Texto do alerta
+                        mensagemSucesso.classList.remove('hidden');
+                        mensagemSucesso.classList.remove('bg-green-100', 'border-green-400', 'text-green-700'); // Remove o estilo de sucesso
+                        mensagemSucesso.classList.add('bg-red-100', 'border-red-400', 'text-red-700'); // Adiciona o estilo de alerta
+                    }
+                    return;
+                }
+    
+                // Cria um objeto com os dados
+                const usuario = {
+                    nome,
+                    endereco,
+                    telefone,
+                    email
+                };
+    
+                // Salva os dados no Local Storage
+                localStorage.setItem('usuarioCadastrado', JSON.stringify(usuario));
+    
+                // Exibe a mensagem de sucesso
+                if (mensagemSucesso) {
+                    mensagemSucesso.textContent = 'Cadastro salvo com sucesso!'; // Texto de sucesso
+                    mensagemSucesso.classList.remove('hidden');
+                    mensagemSucesso.classList.remove('bg-red-100', 'border-red-400', 'text-red-700'); // Remove o estilo de alerta
+                    mensagemSucesso.classList.add('bg-green-100', 'border-green-400', 'text-green-700'); // Adiciona o estilo de sucesso
+                }
+    
+                // Limpa o formulário
+                form.reset();
+    
+                // Esconde a mensagem após 5 segundos
+                setTimeout(() => {
+                    if (mensagemSucesso) {
+                        mensagemSucesso.classList.add('hidden');
+                    }
+                }, 5000);
+            }
+        }
+    
+        // Adiciona um listener para o envio do formulário
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('cadastroForm');
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault(); // Evita o envio padrão do formulário
+                    submitForm(); // Chama a função para salvar e exibir a mensagem
+                });
+            }
+        });
+    </script>
+</body>
+</html>
